@@ -5,7 +5,7 @@ import { FaMoon } from 'react-icons/fa';
 
 
 export default function Header() {
-  const path = useLocation().pathname;
+  const path = useLocation().pathname; //specifies path for Navbar.link active prop
   return (
     <Navbar className='border-b-2'>
         <Link to="/" className='self-center whitespace-nowrap text-sm 
@@ -18,7 +18,7 @@ export default function Header() {
             type='text'
             placeholder='Search...'
             rightIcon={AiOutlineSearch}
-            className='hidden lg:inline'
+            className='hidden lg:inline' //hidden on small screen, inline for large screen
           />
         </form>
         <Button className='w-12 h-10 lg:hidden' color='gray' pill>
@@ -29,14 +29,14 @@ export default function Header() {
             <FaMoon />
           </Button>
           <Link to="/sign-in">
-            <Button gradientDuoTone='purpleToBlue'>
+            <Button gradientDuoTone='purpleToBlue' outline>
               Sign in
               </Button>
           </Link>
           <Navbar.Toggle />
         </div>
             <Navbar.Collapse>
-              <Navbar.Link active={path === "/"} as={'div'}>
+              <Navbar.Link active={path === "/"} as={'div'}> {/*as={'div'} becaue we nested another link */}
                 <Link to='/'>
                   Home
                 </Link>
