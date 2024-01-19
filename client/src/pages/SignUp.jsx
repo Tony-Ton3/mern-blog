@@ -1,18 +1,19 @@
 import { Button, Label, TextInput, Alert, Spinner } from 'flowbite-react';
 import { useState } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [errorMessage, setErrorMessage] = useState(null); 
   const [loading, setLoading] = useState(false); 
+  const navigate = useNavigate(); 
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: String(e.target.value.trim()) }); //.id represent a input box, .value is the user input
+    setFormData({ ...formData, [e.target.id]: String(e.target.value.trim()) });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); //prevent refresh everytime signup button is clicked
+    e.preventDefault();
 
     if(!formData.username || !formData.email || !formData.password) {
       return setErrorMessage('Please fill in all fields');
@@ -20,11 +21,11 @@ export default function SignUp() {
 
     try {
       setLoading(true);
-      setErrorMessage(null); //clear error message when page is rerendered 
-      const res = await fetch('/api/auth/signup', { //backend url is valid because we set proxy in vite.config.js
+      setErrorMessage(null);
+      const res = await fetch('/api/auth/signup', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }, //using json data
-            body: JSON.stringify(formData) //convert json to string before making api call to mongodb
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
       });
       const data = await res.json();
       if (data.success === false) {
@@ -32,7 +33,7 @@ export default function SignUp() {
       }
       setLoading(false);
       if(res.ok) {
-        Navigate('/sign-in');
+        navigate('/sign-in'); // Use the navigate function to redirect to '/sign-in'
       }
     } catch (error) {
       setErrorMessage(error.message);
