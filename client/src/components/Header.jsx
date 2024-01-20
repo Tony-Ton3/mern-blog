@@ -1,13 +1,17 @@
 import { Navbar, TextInput, Button, Dropdown, Avatar } from 'flowbite-react'; 
 import { Link, useLocation } from 'react-router-dom'; //page navigation without rerender
 import { AiOutlineSearch } from 'react-icons/ai';
-import { FaMoon } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
+import { FaMoon, FaSun } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleTheme } from '../redux/theme/themeSlice';
 
 
 export default function Header() {
   const path = useLocation().pathname; //specifies path for Navbar.link active prop
+  const dispatch = useDispatch();
   const {currentUser} = useSelector((state) => state.user); //redux hook to get current user
+  const { theme } = useSelector((state) => state.theme); //redux hook to get current theme
+
   return (
     <Navbar className='border-b-2'>
         <Link to="/" className='self-center whitespace-nowrap text-sm 
@@ -27,8 +31,8 @@ export default function Header() {
           <AiOutlineSearch />
         </Button>
         <div className="flex gap-2 md:order-2">
-          <Button className='w-12 h-10 hidden sm:inline' color='gray' pill>
-            <FaMoon />
+          <Button className='w-12 h-10 hidden sm:inline' color='gray' pill onClick={()=>dispatch(toggleTheme())}>
+            {theme === 'light' ? <FaMoon /> : <FaSun />}
           </Button>
 
          {currentUser ? (
@@ -51,7 +55,9 @@ export default function Header() {
             <Dropdown.Item>Profile</Dropdown.Item>
           </Link>
           <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
+          <Dropdown.Item>
+               Sign out
+          </Dropdown.Item>
          </Dropdown>
 
          ) : (
